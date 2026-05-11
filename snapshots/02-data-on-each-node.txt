@@ -1,0 +1,102 @@
+PS C:\Users\sidin\dev\otus db\hw\mysql-cluster> docker compose exec admin bash /scripts/checks/query-each-node.sh
+
+--- db1 ---
+mysql: [Warning] Using a password on the command line interface can be insecure.
++------+-----------+-----------------+
+| node | read_only | super_read_only |
++------+-----------+-----------------+
+| db1  |         0 |               0 |
++------+-----------+-----------------+
++----------------+
+| Tables_in_otus |
++----------------+
+| customers      |
+| orders         |
+| route_probe    |
++----------------+
++--------------+
+| orders_count |
++--------------+
+|           20 |
++--------------+
+
+--- db2 ---
+mysql: [Warning] Using a password on the command line interface can be insecure.
++------+-----------+-----------------+
+| node | read_only | super_read_only |
++------+-----------+-----------------+
+| db2  |         1 |               1 |
++------+-----------+-----------------+
++----------------+
+| Tables_in_otus |
++----------------+
+| customers      |
+| orders         |
+| route_probe    |
++----------------+
++--------------+
+| orders_count |
++--------------+
+|           20 |
++--------------+
+
+--- db3 ---
+mysql: [Warning] Using a password on the command line interface can be insecure.
++------+-----------+-----------------+
+| node | read_only | super_read_only |
++------+-----------+-----------------+
+| db3  |         1 |               1 |
++------+-----------+-----------------+
++----------------+
+| Tables_in_otus |
++----------------+
+| customers      |
+| orders         |
+| route_probe    |
++----------------+
++--------------+
+| orders_count |
++--------------+
+|           20 |
++--------------+
+
+--- db4 ---
+mysql: [Warning] Using a password on the command line interface can be insecure.
++------+-----------+-----------------+
+| node | read_only | super_read_only |
++------+-----------+-----------------+
+| db4  |         1 |               1 |
++------+-----------+-----------------+
++----------------+
+| Tables_in_otus |
++----------------+
+| customers      |
+| orders         |
+| route_probe    |
++----------------+
++--------------+
+| orders_count |
++--------------+
+|           20 |
++--------------+
+
+--- db5 ---
+mysql: [Warning] Using a password on the command line interface can be insecure.
++------+-----------+-----------------+
+| node | read_only | super_read_only |
++------+-----------+-----------------+
+| db5  |         1 |               1 |
++------+-----------+-----------------+
++----------------+
+| Tables_in_otus |
++----------------+
+| customers      |
+| orders         |
+| route_probe    |
++----------------+
++--------------+
+| orders_count |
++--------------+
+|           20 |
++--------------+
+PS C:\Users\sidin\dev\otus db\hw\mysql-cluster>

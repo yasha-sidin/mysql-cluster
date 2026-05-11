@@ -1,0 +1,6 @@
+!include /etc/mysql-cluster-conf/common.cnf
+
+[mysqld]
+server-id=5
+report-host=db5
+loose-group-replication-local-address=db5:33061

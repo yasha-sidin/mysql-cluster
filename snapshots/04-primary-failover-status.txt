@@ -1,0 +1,364 @@
+PS C:\Users\sidin\dev\otus db\hw\mysql-cluster> docker compose exec admin bash /scripts/checks/status.sh
+=== InnoDB Cluster status ===
+Cannot set LC_ALL to locale en_US.UTF-8: No such file or directory
+Connected through db1.{
+  "clusterName": "otusCluster",
+  "defaultReplicaSet": {
+    "GRProtocolVersion": "8.0.27",
+    "communicationStack": "XCOM",
+    "groupName": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+    "groupViewChangeUuid": "2ee419f5-4d1e-11f1-9636-b2948cbeafe6",
+    "groupViewId": "17784928069081167:21",
+    "name": "default",
+    "paxosSingleLeader": "OFF",
+    "primary": "db1:3306",
+    "ssl": "DISABLED",
+    "status": "OK",
+    "statusText": "Cluster is ONLINE and can tolerate up to 2 failures.",
+    "topology": {
+      "db1:3306": {
+        "address": "db1:3306",
+        "applierWorkerThreads": 4,
+        "fenceSysVars": [],
+        "memberId": "14a3c748-4d1e-11f1-bdb8-b2948cbeafe6",
+        "memberRole": "PRIMARY",
+        "memberState": "ONLINE",
+        "mode": "R/W",
+        "readReplicas": {},
+        "replicationLag": "applier_queue_applied",
+        "role": "HA",
+        "status": "ONLINE",
+        "version": "8.0.46"
+      },
+      "db2:3306": {
+        "address": "db2:3306",
+        "applierWorkerThreads": 4,
+        "fenceSysVars": [
+          "read_only",
+          "super_read_only"
+        ],
+        "memberId": "14b4258b-4d1e-11f1-ab0f-5ad7bb2764c4",
+        "memberRole": "SECONDARY",
+        "memberState": "ONLINE",
+        "mode": "R/O",
+        "readReplicas": {},
+        "replicationLag": "applier_queue_applied",
+        "role": "HA",
+        "status": "ONLINE",
+        "version": "8.0.46"
+      },
+      "db3:3306": {
+        "address": "db3:3306",
+        "applierWorkerThreads": 4,
+        "fenceSysVars": [
+          "read_only",
+          "super_read_only"
+        ],
+        "memberId": "14be753d-4d1e-11f1-aa61-964fe4f8dca4",
+        "memberRole": "SECONDARY",
+        "memberState": "ONLINE",
+        "mode": "R/O",
+        "readReplicas": {},
+        "replicationLag": "applier_queue_applied",
+        "role": "HA",
+        "status": "ONLINE",
+        "version": "8.0.46"
+      },
+      "db4:3306": {
+        "address": "db4:3306",
+        "applierWorkerThreads": 4,
+        "fenceSysVars": [
+          "read_only",
+          "super_read_only"
+        ],
+        "memberId": "14e58a09-4d1e-11f1-9289-16641a5e3228",
+        "memberRole": "SECONDARY",
+        "memberState": "ONLINE",
+        "mode": "R/O",
+        "readReplicas": {},
+        "replicationLag": "applier_queue_applied",
+        "role": "HA",
+        "status": "ONLINE",
+        "version": "8.0.46"
+      },
+      "db5:3306": {
+        "address": "db5:3306",
+        "applierWorkerThreads": 4,
+        "fenceSysVars": [
+          "read_only",
+          "super_read_only"
+        ],
+        "memberId": "14a8b7d2-4d1e-11f1-8b35-2e7a93311edc",
+        "memberRole": "SECONDARY",
+        "memberState": "ONLINE",
+        "mode": "R/O",
+        "readReplicas": {},
+        "replicationLag": "applier_queue_applied",
+        "role": "HA",
+        "status": "ONLINE",
+        "version": "8.0.46"
+      }
+    },
+    "topologyMode": "Single-Primary"
+  },
+  "groupInformationSourceMember": "db1:3306",
+  "metadataVersion": "2.1.0"
+}
+=== Group Replication view from each node ===
+
+--- db1 ---
+mysql: [Warning] Using a password on the command line interface can be insecure.
++------+-----------+-----------------+
+| node | read_only | super_read_only |
++------+-----------+-----------------+
+| db1  |         0 |               0 |
++------+-----------+-----------------+
++-------------+-------------+--------------+-------------+
+| MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE |
++-------------+-------------+--------------+-------------+
+| db1         |        3306 | ONLINE       | PRIMARY     |
+| db2         |        3306 | ONLINE       | SECONDARY   |
+| db3         |        3306 | ONLINE       | SECONDARY   |
+| db4         |        3306 | ONLINE       | SECONDARY   |
+| db5         |        3306 | ONLINE       | SECONDARY   |
++-------------+-------------+--------------+-------------+
+
+--- db2 ---
+mysql: [Warning] Using a password on the command line interface can be insecure.
++------+-----------+-----------------+
+| node | read_only | super_read_only |
++------+-----------+-----------------+
+| db2  |         1 |               1 |
++------+-----------+-----------------+
++-------------+-------------+--------------+-------------+
+| MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE |
++-------------+-------------+--------------+-------------+
+| db1         |        3306 | ONLINE       | PRIMARY     |
+| db2         |        3306 | ONLINE       | SECONDARY   |
+| db3         |        3306 | ONLINE       | SECONDARY   |
+| db4         |        3306 | ONLINE       | SECONDARY   |
+| db5         |        3306 | ONLINE       | SECONDARY   |
++-------------+-------------+--------------+-------------+
+
+--- db3 ---
+mysql: [Warning] Using a password on the command line interface can be insecure.
++------+-----------+-----------------+
+| node | read_only | super_read_only |
++------+-----------+-----------------+
+| db3  |         1 |               1 |
++------+-----------+-----------------+
++-------------+-------------+--------------+-------------+
+| MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE |
++-------------+-------------+--------------+-------------+
+| db1         |        3306 | ONLINE       | PRIMARY     |
+| db2         |        3306 | ONLINE       | SECONDARY   |
+| db3         |        3306 | ONLINE       | SECONDARY   |
+| db4         |        3306 | ONLINE       | SECONDARY   |
+| db5         |        3306 | ONLINE       | SECONDARY   |
++-------------+-------------+--------------+-------------+
+
+--- db4 ---
+mysql: [Warning] Using a password on the command line interface can be insecure.
++------+-----------+-----------------+
+| node | read_only | super_read_only |
++------+-----------+-----------------+
+| db4  |         1 |               1 |
++------+-----------+-----------------+
++-------------+-------------+--------------+-------------+
+| MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE |
++-------------+-------------+--------------+-------------+
+| db1         |        3306 | ONLINE       | PRIMARY     |
+| db2         |        3306 | ONLINE       | SECONDARY   |
+| db3         |        3306 | ONLINE       | SECONDARY   |
+| db4         |        3306 | ONLINE       | SECONDARY   |
+| db5         |        3306 | ONLINE       | SECONDARY   |
++-------------+-------------+--------------+-------------+
+
+--- db5 ---
+mysql: [Warning] Using a password on the command line interface can be insecure.
++------+-----------+-----------------+
+| node | read_only | super_read_only |
++------+-----------+-----------------+
+| db5  |         1 |               1 |
++------+-----------+-----------------+
++-------------+-------------+--------------+-------------+
+| MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE |
++-------------+-------------+--------------+-------------+
+| db1         |        3306 | ONLINE       | PRIMARY     |
+| db2         |        3306 | ONLINE       | SECONDARY   |
+| db3         |        3306 | ONLINE       | SECONDARY   |
+| db4         |        3306 | ONLINE       | SECONDARY   |
+| db5         |        3306 | ONLINE       | SECONDARY   |
++-------------+-------------+--------------+-------------+
+PS C:\Users\sidin\dev\otus db\hw\mysql-cluster> docker compose stop db1
+[+] Stopping 1/1
+ ✔ Container otus-mysql-cluster-db1-1  Stopped                                                                                   6.9s
+PS C:\Users\sidin\dev\otus db\hw\mysql-cluster> docker compose exec admin bash /scripts/checks/status.sh
+=== InnoDB Cluster status ===
+Cannot set LC_ALL to locale en_US.UTF-8: No such file or directory
+Connected through db2.{
+  "clusterName": "otusCluster",
+  "defaultReplicaSet": {
+    "GRProtocolVersion": "8.0.27",
+    "communicationStack": "XCOM",
+    "groupName": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+    "groupViewChangeUuid": "2ee419f5-4d1e-11f1-9636-b2948cbeafe6",
+    "groupViewId": "17784928069081167:22",
+    "name": "default",
+    "paxosSingleLeader": "OFF",
+    "primary": "db5:3306",
+    "ssl": "DISABLED",
+    "status": "OK_PARTIAL",
+    "statusText": "Cluster is ONLINE and can tolerate up to ONE failure. 1 member is not active.",
+    "topology": {
+      "db1:3306": {
+        "address": "db1:3306",
+        "fenceSysVars": [],
+        "memberId": "",
+        "memberRole": "SECONDARY",
+        "memberState": "(MISSING)",
+        "mode": "n/a",
+        "readReplicas": {},
+        "role": "HA",
+        "shellConnectError": "MySQL Error 2005: Could not open connection to 'db1:3306': Unknown MySQL server host 'db1' (-2)",
+        "status": "(MISSING)"
+      },
+      "db2:3306": {
+        "address": "db2:3306",
+        "applierWorkerThreads": 4,
+        "fenceSysVars": [
+          "read_only",
+          "super_read_only"
+        ],
+        "memberId": "14b4258b-4d1e-11f1-ab0f-5ad7bb2764c4",
+        "memberRole": "SECONDARY",
+        "memberState": "ONLINE",
+        "mode": "R/O",
+        "readReplicas": {},
+        "replicationLag": "applier_queue_applied",
+        "role": "HA",
+        "status": "ONLINE",
+        "version": "8.0.46"
+      },
+      "db3:3306": {
+        "address": "db3:3306",
+        "applierWorkerThreads": 4,
+        "fenceSysVars": [
+          "read_only",
+          "super_read_only"
+        ],
+        "memberId": "14be753d-4d1e-11f1-aa61-964fe4f8dca4",
+        "memberRole": "SECONDARY",
+        "memberState": "ONLINE",
+        "mode": "R/O",
+        "readReplicas": {},
+        "replicationLag": "applier_queue_applied",
+        "role": "HA",
+        "status": "ONLINE",
+        "version": "8.0.46"
+      },
+      "db4:3306": {
+        "address": "db4:3306",
+        "applierWorkerThreads": 4,
+        "fenceSysVars": [
+          "read_only",
+          "super_read_only"
+        ],
+        "memberId": "14e58a09-4d1e-11f1-9289-16641a5e3228",
+        "memberRole": "SECONDARY",
+        "memberState": "ONLINE",
+        "mode": "R/O",
+        "readReplicas": {},
+        "replicationLag": "applier_queue_applied",
+        "role": "HA",
+        "status": "ONLINE",
+        "version": "8.0.46"
+      },
+      "db5:3306": {
+        "address": "db5:3306",
+        "applierWorkerThreads": 4,
+        "fenceSysVars": [],
+        "memberId": "14a8b7d2-4d1e-11f1-8b35-2e7a93311edc",
+        "memberRole": "PRIMARY",
+        "memberState": "ONLINE",
+        "mode": "R/W",
+        "readReplicas": {},
+        "replicationLag": "applier_queue_applied",
+        "role": "HA",
+        "status": "ONLINE",
+        "version": "8.0.46"
+      }
+    },
+    "topologyMode": "Single-Primary"
+  },
+  "groupInformationSourceMember": "db5:3306",
+  "metadataVersion": "2.1.0"
+}
+=== Group Replication view from each node ===
+
+--- db1 ---
+db1 is unavailable
+
+--- db2 ---
+mysql: [Warning] Using a password on the command line interface can be insecure.
++------+-----------+-----------------+
+| node | read_only | super_read_only |
++------+-----------+-----------------+
+| db2  |         1 |               1 |
++------+-----------+-----------------+
++-------------+-------------+--------------+-------------+
+| MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE |
++-------------+-------------+--------------+-------------+
+| db2         |        3306 | ONLINE       | SECONDARY   |
+| db3         |        3306 | ONLINE       | SECONDARY   |
+| db4         |        3306 | ONLINE       | SECONDARY   |
+| db5         |        3306 | ONLINE       | PRIMARY     |
++-------------+-------------+--------------+-------------+
+
+--- db3 ---
+mysql: [Warning] Using a password on the command line interface can be insecure.
++------+-----------+-----------------+
+| node | read_only | super_read_only |
++------+-----------+-----------------+
+| db3  |         1 |               1 |
++------+-----------+-----------------+
++-------------+-------------+--------------+-------------+
+| MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE |
++-------------+-------------+--------------+-------------+
+| db2         |        3306 | ONLINE       | SECONDARY   |
+| db3         |        3306 | ONLINE       | SECONDARY   |
+| db4         |        3306 | ONLINE       | SECONDARY   |
+| db5         |        3306 | ONLINE       | PRIMARY     |
++-------------+-------------+--------------+-------------+
+
+--- db4 ---
+mysql: [Warning] Using a password on the command line interface can be insecure.
++------+-----------+-----------------+
+| node | read_only | super_read_only |
++------+-----------+-----------------+
+| db4  |         1 |               1 |
++------+-----------+-----------------+
++-------------+-------------+--------------+-------------+
+| MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE |
++-------------+-------------+--------------+-------------+
+| db2         |        3306 | ONLINE       | SECONDARY   |
+| db3         |        3306 | ONLINE       | SECONDARY   |
+| db4         |        3306 | ONLINE       | SECONDARY   |
+| db5         |        3306 | ONLINE       | PRIMARY     |
++-------------+-------------+--------------+-------------+
+
+--- db5 ---
+mysql: [Warning] Using a password on the command line interface can be insecure.
++------+-----------+-----------------+
+| node | read_only | super_read_only |
++------+-----------+-----------------+
+| db5  |         0 |               0 |
++------+-----------+-----------------+
++-------------+-------------+--------------+-------------+
+| MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE |
++-------------+-------------+--------------+-------------+
+| db2         |        3306 | ONLINE       | SECONDARY   |
+| db3         |        3306 | ONLINE       | SECONDARY   |
+| db4         |        3306 | ONLINE       | SECONDARY   |
+| db5         |        3306 | ONLINE       | PRIMARY     |
++-------------+-------------+--------------+-------------+

@@ -1,0 +1,220 @@
+name: otus-mysql-cluster
+
+x-mysql-common: &mysql-common
+  image: otus-mysql-server:8.0
+  build:
+    context: ./config/mysql
+  environment:
+    MYSQL_ROOT_PASSWORD: RootPassw0rd!
+    MYSQL_ROOT_HOST: "%"
+  networks:
+    cluster-net:
+  restart: unless-stopped
+  healthcheck:
+    test: ["CMD-SHELL", "mysqladmin ping -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
+    interval: 10s
+    timeout: 5s
+    retries: 30
+
+services:
+  db1:
+    <<: *mysql-common
+    hostname: db1
+    command: ["mysqld", "--defaults-extra-file=/etc/mysql-cluster-conf/db1.cnf"]
+    ports:
+      - "3311:3306"
+    volumes:
+      - db1-data:/var/lib/mysql
+
+  db2:
+    <<: *mysql-common
+    hostname: db2
+    command: ["mysqld", "--defaults-extra-file=/etc/mysql-cluster-conf/db2.cnf"]
+    ports:
+      - "3312:3306"
+    volumes:
+      - db2-data:/var/lib/mysql
+
+  db3:
+    <<: *mysql-common
+    hostname: db3
+    command: ["mysqld", "--defaults-extra-file=/etc/mysql-cluster-conf/db3.cnf"]
+    ports:
+      - "3313:3306"
+    volumes:
+      - db3-data:/var/lib/mysql
+
+  db4:
+    <<: *mysql-common
+    hostname: db4
+    command: ["mysqld", "--defaults-extra-file=/etc/mysql-cluster-conf/db4.cnf"]
+    ports:
+      - "3314:3306"
+    volumes:
+      - db4-data:/var/lib/mysql
+
+  db5:
+    <<: *mysql-common
+    hostname: db5
+    command: ["mysqld", "--defaults-extra-file=/etc/mysql-cluster-conf/db5.cnf"]
+    ports:
+      - "3315:3306"
+    volumes:
+      - db5-data:/var/lib/mysql
+
+  proxysql1:
+    image: proxysql/proxysql:2.6.5
+    hostname: proxysql1
+    networks:
+      cluster-net:
+    restart: unless-stopped
+    ports:
+      - "16032:6032"
+      - "16033:6033"
+    volumes:
+      - ./config/proxysql/proxysql.cnf:/etc/proxysql.cnf:ro
+      - proxysql1-data:/var/lib/proxysql
+    depends_on:
+      - db1
+      - db2
+      - db3
+      - db4
+      - db5
+
+  proxysql2:
+    image: proxysql/proxysql:2.6.5
+    hostname: proxysql2
+    networks:
+      cluster-net:
+    restart: unless-stopped
+    ports:
+      - "26032:6032"
+      - "26033:6033"
+    volumes:
+      - ./config/proxysql/proxysql.cnf:/etc/proxysql.cnf:ro
+      - proxysql2-data:/var/lib/proxysql
+    depends_on:
+      - db1
+      - db2
+      - db3
+      - db4
+      - db5
+
+  admin:
+    image: container-registry.oracle.com/mysql/community-server:8.0
+    hostname: admin
+    entrypoint: ["bash", "-lc", "sleep infinity"]
+    environment:
+      MYSQL_ROOT_PASSWORD: RootPassw0rd!
+      MYSQL_APP_PASSWORD: AppPassw0rd!
+      MYSQL_MONITOR_PASSWORD: MonitorPassw0rd!
+      MYSQL_BACKUP_PASSWORD: BackupPassw0rd!
+    networks:
+      cluster-net:
+    volumes:
+      - ./scripts:/scripts:ro
+      - backup-agent-work:/backup-work
+    depends_on:
+      - db1
+      - db2
+      - db3
+      - db4
+      - db5
+      - proxysql1
+      - proxysql2
+
+  client1:
+    image: container-registry.oracle.com/mysql/community-server:8.0
+    hostname: client1
+    entrypoint: ["bash", "-lc", "sleep infinity"]
+    environment:
+      MYSQL_APP_PASSWORD: AppPassw0rd!
+    networks:
+      cluster-net:
+    depends_on:
+      - proxysql1
+
+  client2:
+    image: container-registry.oracle.com/mysql/community-server:8.0
+    hostname: client2
+    entrypoint: ["bash", "-lc", "sleep infinity"]
+    environment:
+      MYSQL_APP_PASSWORD: AppPassw0rd!
+    networks:
+      cluster-net:
+    depends_on:
+      - proxysql2
+
+  backup-agent:
+    image: otus-backup-agent:8.0
+    build:
+      context: ./backup-agent
+    hostname: backup-agent
+    entrypoint: ["bash", "-lc", "sleep infinity"]
+    environment:
+      MYSQL_BACKUP_PASSWORD: BackupPassw0rd!
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin123
+      BACKUP_BUCKET: mysql-backups
+      MINIO_A_ENDPOINT: http://minio-a:9000
+      MINIO_B_ENDPOINT: http://minio-b:9000
+    networks:
+      cluster-net:
+    volumes:
+      - ./scripts:/scripts:ro
+    depends_on:
+      - db1
+      - db2
+      - db3
+      - db4
+      - db5
+      - minio-a
+      - minio-b
+
+  minio-a:
+    image: minio/minio:latest
+    hostname: minio-a
+    command: ["server", "/data", "--console-address", ":9001"]
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin123
+    networks:
+      cluster-net:
+    restart: unless-stopped
+    ports:
+      - "9001:9000"
+      - "19001:9001"
+    volumes:
+      - minio-a-data:/data
+
+  minio-b:
+    image: minio/minio:latest
+    hostname: minio-b
+    command: ["server", "/data", "--console-address", ":9001"]
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin123
+    networks:
+      cluster-net:
+    restart: unless-stopped
+    ports:
+      - "9002:9000"
+      - "19002:9001"
+    volumes:
+      - minio-b-data:/data
+
+networks:
+  cluster-net:
+    driver: bridge
+
+volumes:
+  db1-data:
+  db2-data:
+  db3-data:
+  db4-data:
+  db5-data:
+  proxysql1-data:
+  proxysql2-data:
+  backup-agent-work:
+  minio-a-data:
+  minio-b-data:

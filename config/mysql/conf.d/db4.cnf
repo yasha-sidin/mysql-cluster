@@ -1,0 +1,6 @@
+!include /etc/mysql-cluster-conf/common.cnf
+
+[mysqld]
+server-id=4
+report-host=db4
+loose-group-replication-local-address=db4:33061

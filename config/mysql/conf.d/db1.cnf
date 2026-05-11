@@ -1,0 +1,6 @@
+!include /etc/mysql-cluster-conf/common.cnf
+
+[mysqld]
+server-id=1
+report-host=db1
+loose-group-replication-local-address=db1:33061

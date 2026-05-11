@@ -1,0 +1,76 @@
+PS C:\Users\sidin\dev\otus db\hw\mysql-cluster> docker compose exec backup-agent bash /scripts/backup/backup.sh
+Backup source: db4
+Volume dump target: /backup-work/otus-backup.K1w7sd/otus-20260511-100059
+Cannot set LC_ALL to locale en_US.UTF-8: No such file or directory
+Acquiring global read lock
+Global read lock acquired
+Initializing - done
+1 schemas will be dumped and within them 3 tables, 0 views.
+Gathering information - done
+All transactions have been started
+Locking instance for backup
+Global read lock has been released
+Writing global DDL files
+Running data dump using 4 threads.
+NOTE: Progress information uses estimated values and may not be accurate.
+Writing schema metadata - done
+Writing DDL - done
+Writing table metadata - done
+Starting data dump
+103% (33 rows / ~32 rows), 0.00 rows/s, 0.00 B/s uncompressed, 0.00 B/s compressed
+Dump duration: 00:00:00s
+Total duration: 00:00:00s
+Schemas dumped: 1
+Tables dumped: 3
+Uncompressed data size: 1.23 KB
+Compressed data size: 395 bytes
+Compression ratio: 3.1
+Rows written: 33
+Bytes written: 395 bytes
+Average uncompressed throughput: 1.23 KB/s
+Average compressed throughput: 395.00 B/s
+Saving backup to MinIO:
+Uploading dump to minio-a...
+...be@@0.tsv.zst.idx: 7.40 KiB / 7.40 KiB ┃▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓┃ 206.31 KiB/s 0s  minio-a: mysql-backups/otus-20260511-100059/
+Uploading dump to minio-b...
+...s@route_probe.sql: 7.40 KiB / 7.40 KiB ┃▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓┃ 271.90 KiB/s 0s  minio-b: mysql-backups/otus-20260511-100059/
+Backup upload copies: 2
+PS C:\Users\sidin\dev\otus db\hw\mysql-cluster> docker compose exec backup-agent mc ls --recursive minio-a/mysql-backups
+[2026-05-11 10:01:00 UTC]   359B STANDARD otus-20260511-100059/@.done.json
+[2026-05-11 10:01:00 UTC]   915B STANDARD otus-20260511-100059/@.json
+[2026-05-11 10:01:00 UTC]   234B STANDARD otus-20260511-100059/@.post.sql
+[2026-05-11 10:01:00 UTC]   234B STANDARD otus-20260511-100059/@.sql
+[2026-05-11 10:01:00 UTC]   407B STANDARD otus-20260511-100059/otus.json
+[2026-05-11 10:01:00 UTC]   545B STANDARD otus-20260511-100059/otus.sql
+[2026-05-11 10:01:00 UTC]   625B STANDARD otus-20260511-100059/otus@customers.json
+[2026-05-11 10:01:00 UTC]   736B STANDARD otus-20260511-100059/otus@customers.sql
+[2026-05-11 10:01:00 UTC]   129B STANDARD otus-20260511-100059/otus@customers@@0.tsv.zst
+[2026-05-11 10:01:00 UTC]     8B STANDARD otus-20260511-100059/otus@customers@@0.tsv.zst.idx
+[2026-05-11 10:01:00 UTC]   678B STANDARD otus-20260511-100059/otus@orders.json
+[2026-05-11 10:01:00 UTC]   944B STANDARD otus-20260511-100059/otus@orders.sql
+[2026-05-11 10:01:00 UTC]   207B STANDARD otus-20260511-100059/otus@orders@@0.tsv.zst
+[2026-05-11 10:01:00 UTC]     8B STANDARD otus-20260511-100059/otus@orders@@0.tsv.zst.idx
+[2026-05-11 10:01:00 UTC]   666B STANDARD otus-20260511-100059/otus@route_probe.json
+[2026-05-11 10:01:00 UTC]   818B STANDARD otus-20260511-100059/otus@route_probe.sql
+[2026-05-11 10:01:00 UTC]    59B STANDARD otus-20260511-100059/otus@route_probe@@0.tsv.zst
+[2026-05-11 10:01:00 UTC]     8B STANDARD otus-20260511-100059/otus@route_probe@@0.tsv.zst.idx
+PS C:\Users\sidin\dev\otus db\hw\mysql-cluster> docker compose exec backup-agent mc ls --recursive minio-b/mysql-backups
+[2026-05-11 10:01:00 UTC]   359B STANDARD otus-20260511-100059/@.done.json
+[2026-05-11 10:01:00 UTC]   915B STANDARD otus-20260511-100059/@.json
+[2026-05-11 10:01:00 UTC]   234B STANDARD otus-20260511-100059/@.post.sql
+[2026-05-11 10:01:00 UTC]   234B STANDARD otus-20260511-100059/@.sql
+[2026-05-11 10:01:00 UTC]   407B STANDARD otus-20260511-100059/otus.json
+[2026-05-11 10:01:00 UTC]   545B STANDARD otus-20260511-100059/otus.sql
+[2026-05-11 10:01:00 UTC]   625B STANDARD otus-20260511-100059/otus@customers.json
+[2026-05-11 10:01:00 UTC]   736B STANDARD otus-20260511-100059/otus@customers.sql
+[2026-05-11 10:01:00 UTC]   129B STANDARD otus-20260511-100059/otus@customers@@0.tsv.zst
+[2026-05-11 10:01:00 UTC]     8B STANDARD otus-20260511-100059/otus@customers@@0.tsv.zst.idx
+[2026-05-11 10:01:00 UTC]   678B STANDARD otus-20260511-100059/otus@orders.json
+[2026-05-11 10:01:00 UTC]   944B STANDARD otus-20260511-100059/otus@orders.sql
+[2026-05-11 10:01:00 UTC]   207B STANDARD otus-20260511-100059/otus@orders@@0.tsv.zst
+[2026-05-11 10:01:00 UTC]     8B STANDARD otus-20260511-100059/otus@orders@@0.tsv.zst.idx
+[2026-05-11 10:01:00 UTC]   666B STANDARD otus-20260511-100059/otus@route_probe.json
+[2026-05-11 10:01:00 UTC]   818B STANDARD otus-20260511-100059/otus@route_probe.sql
+[2026-05-11 10:01:00 UTC]    59B STANDARD otus-20260511-100059/otus@route_probe@@0.tsv.zst
+[2026-05-11 10:01:00 UTC]     8B STANDARD otus-20260511-100059/otus@route_probe@@0.tsv.zst.idx
+PS C:\Users\sidin\dev\otus db\hw\mysql-cluster>
